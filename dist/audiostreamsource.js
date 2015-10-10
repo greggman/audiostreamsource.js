@@ -1,4 +1,4 @@
-// @license audiosteamsource.js 0.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+// @license audiosteamsource.js 0.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 // Available via the MIT license.
 // see: http://github.com/greggman/audiostreamsource.js for details
 
