@@ -1,0 +1,42 @@
+{
+  "name": "audiostreamsource.js",
+  "version": "0.0.0",
+  "homepage": "http://github.com/greggman/audiostreamsource.js",
+  "authors": [
+    "Gregg Tavares <github@greggman.com>"
+  ],
+  "description": "Provide a streamed audio source for WebAudio across browsers",
+  "main": "dist/audiostreamsource-min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "WebAudio",
+    "Stream",
+    "Streaming",
+    "Audio",
+    "Music"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "jsdoc.conf.json",
+    "index.html",
+    "Gruntfile.js",
+    "package.json",
+    "CNAME",
+    "3rdparty",
+    "examples",
+    "docs",
+    "jsdoc-template",
+    "resources",
+    "build",
+    "src",
+    "templates",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
