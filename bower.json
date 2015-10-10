@@ -5,7 +5,7 @@
   "authors": [
     "Gregg Tavares <github@greggman.com>"
   ],
-  "description": "Provide a streamed audio source for WebAudio across browsers",
+  "description": "Provides a streamed audio source for WebAudio across browsers",
   "main": "dist/audiostreamsource-min.js",
   "moduleType": [
     "amd",
