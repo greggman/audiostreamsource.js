@@ -27,7 +27,7 @@ In that case it's not streamed. Sucks to be Safari.
 
 ## API
 
-There's one function, `audiostreamsource.create`, it takes an options and a callback.
+There's one function, `audioStreamSource.create`, it takes an options and a callback.
 
 The callback will be called with null as the first argument if there are no errors.
 
@@ -49,7 +49,7 @@ The options passed into `audioStreamSource.create` are as follows
 
 ## Example
 
-[]There's an example here](http://twgljs.org/examples/dynamic-buffers.html).
+[There's an example here](http://twgljs.org/examples/dynamic-buffers.html).
 
 ## License
 
