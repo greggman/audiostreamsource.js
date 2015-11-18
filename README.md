@@ -13,39 +13,111 @@ In that case it's not streamed. Sucks to be Safari.
     var streamSource = audioStreamSource.create({
       context: context,                    // a WebAudio context
       loop: true,                          // true or false if you want it to loop
-      src: 'url-to-some.mp3',              // file to play
-      lofiSrc: 'url-to-some-smaller.mp3',  // for shitty browsers like Safari on iOS
-    }, doSomething);
+      autoPlay: false,                     // true to autoplay (you don't want this. See below)
+      crossOrigin: false,                  // true to try to get crossOrigin permission
+    });
 
-    funciton doSomething(err) {
-      // do something with the streamSource
-
-      streamSource.source.connect(context.destination);
+    streamSource.on('newSource', function(source) {
       streamSource.play();
-    }
+      source.connect(context.destination);
+    });
+
+    streamSource.on('error', function(err) {
+      // got an error, bad URL? cross origin permission error?
+    });
+
+    var src     = 'url-to-some.mp3';          // file to play
+    var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
+
+    streamSource.setSource(src, lofiSrc);
     </script>
 
 ## API
 
-There's one function, `audioStreamSource.create`, it takes an options and a callback.
+`audioStreamSource.create`, it takes options. After that you setup event listeners, `newSource`
+and `error` using the `streamSource.on` function. You then call `streamSource.setSource` with
+1 or 2 URLs. The first URL is the source to your audio. The second URL is an optional second source
+for if you're on iOS since as of iOS9 iOS still does not support `createMediaElementSource`.
 
-The callback will be called with null as the first argument if there are no errors.
+When the audio is ready to play you'll get a `newSource` event. At that point you can call
+`streamSource.play` and connect the `source` node wherever you need it.
 
-The created stream source has just 2 functions and 1 property
+Because iOS does not support `createMediaElementSource` it can't stream audio into Web Audio.
+That means (a) it can not start playing audio until the entire file is downloaded and (b) it
+generally can not get access to cross origin audio data.
 
-    streamSource.source  // a WebAudio source node
-    streamSource.play(); // starts playing the source
-    streamSource.stop(); // stops the source
+*   `streamSource.setSource`
+
+    lets you set a new source.
+
+*   `streamSource.getSource`
+
+    Gets the source node for the stream. This will be null until the first `newSource`
+    event arrives.
+
+*   `streamSource.play()`
+
+    starts playing the source
+
+*   `streamSource.stop()`
+
+    stops playing the source
+
+*   `streamSource.isPlaying()`
+
+    return true if the stream is playing.
 
 ### Options
 
 The options passed into `audioStreamSource.create` are as follows
 
-    context:   a WebAudio context (required)
-    src:       the URL for an audio file (required)
-    lofiSrc:   an *optional* URL for Safari. Because since it can't stream you might want something smaller
-    loop:      whether or not to loop. Default false
-    autoPlay:  whether or not to start playing automatically. default false
+    context:      a WebAudio context (required)
+    loop:         whether or not to loop. Default false
+    autoPlay:     whether or not to start playing automatically. default false ([don't set to true](#autoplay-issues))
+    crossOrigin:  whether or not to request crossOrigin permissions
+
+## autoPlay issues
+
+Mobile browsers can not autoplay audio. Audio must be started by user gesture. Because of this autoPlay can not work
+on mobile period. You must ask the user to click or touch something.
+
+Example:
+
+    var isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
+    var context = new (window.AudioContext || window.webkitAudioContext)();
+    var clickToStartElem = document.getElementById("clickMe");  // some element to click
+
+    function startAudio() {
+      streamSource.play();
+      source.connect(context.destination);
+    }
+
+    var streamSource = audioStreamSource.create({
+      context: context,                    // a WebAudio context
+      loop: true,                          // true or false if you want it to loop
+    });
+
+    streamSource.on('newSource', function(source) {
+      if (isMobile) {
+        clickToStartElem.style.display = "block"; // make this element visible
+        clickToStartElem.addEventListener('click', function() {
+          clickToStartElem.style.display = "none"; // hide it
+          startAudio();
+        });
+      } else {
+        startAudio();
+      }
+    });
+
+    streamSource.on('error', function(err) {
+      // got an error, bad URL? cross origin permission error?
+    });
+
+    var src     = 'url-to-some.mp3';          // file to play
+    var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
+
+    streamSource.setSource(src, lofiSrc);
+
 
 ## Example
 
