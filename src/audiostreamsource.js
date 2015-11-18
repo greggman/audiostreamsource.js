@@ -17,7 +17,6 @@
   // so my hope is whenever they get around to actually supporting the 3+ year old
   // standard that things will actually work.
   var shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
-  var g = {};
 
   function addEventEmitter(self) {
     var _handlers = {};
@@ -54,7 +53,12 @@
         if (source) {
           source.disconnect();
         }
-        startPlaying(play, emit);
+        if (autoPlay) {
+          startPlaying(play, emit);
+        }
+        if (!source) {
+          source = context.createMediaElementSource(audio);
+        }
         emit('newSource', source);
       }
     }
@@ -117,9 +121,6 @@
     function play() {
       audio.play();
       audio.currentTime = 0;
-      if (!source) {
-        source = context.createMediaElementSource(audio);
-      }
     }
 
     function isPlaying() {
