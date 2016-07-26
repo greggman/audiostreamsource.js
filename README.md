@@ -7,30 +7,32 @@ In that case it's not streamed. Sucks to be Safari.
 
 ## Usage
 
-    <script src="audiostreamsource.min.js"><script>
-    <script>
-    var context = new (window.AudioContext || window.webkitAudioContext)();
-    var streamSource = audioStreamSource.create({
-      context: context,                    // a WebAudio context
-      loop: true,                          // true or false if you want it to loop
-      autoPlay: false,                     // true to autoplay (you don't want this. See below)
-      crossOrigin: false,                  // true to try to get crossOrigin permission
-    });
+```html
+<script src="audiostreamsource.min.js"><script>
+<script>
+var context = new (window.AudioContext || window.webkitAudioContext)();
+var streamSource = audioStreamSource.create({
+  context: context,                    // a WebAudio context
+  loop: true,                          // true or false if you want it to loop
+  autoPlay: false,                     // true to autoplay (you don't want this. See below)
+  crossOrigin: false,                  // true to try to get crossOrigin permission
+});
 
-    streamSource.on('newSource', function(source) {
-      streamSource.play();
-      source.connect(context.destination);
-    });
+streamSource.on('newSource', function(source) {
+  streamSource.play();
+  source.connect(context.destination);
+});
 
-    streamSource.on('error', function(err) {
-      // got an error, bad URL? cross origin permission error?
-    });
+streamSource.on('error', function(err) {
+  // got an error, bad URL? cross origin permission error?
+});
 
-    var src     = 'url-to-some.mp3';          // file to play
-    var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
+var src     = 'url-to-some.mp3';          // file to play
+var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
 
-    streamSource.setSource(src, lofiSrc);
-    </script>
+streamSource.setSource(src, lofiSrc);
+</script>
+```
 
 ## API
 
@@ -83,41 +85,42 @@ on mobile period. You must ask the user to click or touch something.
 
 Example:
 
-    var isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
-    var context = new (window.AudioContext || window.webkitAudioContext)();
-    var clickToStartElem = document.getElementById("clickMe");  // some element to click
+```js
+var isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
+var context = new (window.AudioContext || window.webkitAudioContext)();
+var clickToStartElem = document.getElementById("clickMe");  // some element to click
 
-    function startAudio() {
-      streamSource.play();
-      source.connect(context.destination);
-    }
+function startAudio() {
+  streamSource.play();
+  source.connect(context.destination);
+}
 
-    var streamSource = audioStreamSource.create({
-      context: context,                    // a WebAudio context
-      loop: true,                          // true or false if you want it to loop
+var streamSource = audioStreamSource.create({
+  context: context,                    // a WebAudio context
+  loop: true,                          // true or false if you want it to loop
+});
+
+streamSource.on('newSource', function(source) {
+  if (isMobile) {
+    clickToStartElem.style.display = "block"; // make this element visible
+    clickToStartElem.addEventListener('click', function() {
+      clickToStartElem.style.display = "none"; // hide it
+      startAudio();
     });
+  } else {
+    startAudio();
+  }
+});
 
-    streamSource.on('newSource', function(source) {
-      if (isMobile) {
-        clickToStartElem.style.display = "block"; // make this element visible
-        clickToStartElem.addEventListener('click', function() {
-          clickToStartElem.style.display = "none"; // hide it
-          startAudio();
-        });
-      } else {
-        startAudio();
-      }
-    });
+streamSource.on('error', function(err) {
+  // got an error, bad URL? cross origin permission error?
+});
 
-    streamSource.on('error', function(err) {
-      // got an error, bad URL? cross origin permission error?
-    });
+var src     = 'url-to-some.mp3';          // file to play
+var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
 
-    var src     = 'url-to-some.mp3';          // file to play
-    var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
-
-    streamSource.setSource(src, lofiSrc);
-
+streamSource.setSource(src, lofiSrc);
+```
 
 ## Example
 
