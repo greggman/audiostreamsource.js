@@ -2,8 +2,8 @@
 
 This is a tiny library to provide a streamed audio source for the WebAudio API cross browser.
 
-Specifically at least up to iOS9 you can't stream audio to the WebAudio API >:(
-In that case it's not streamed. Sucks to be Safari.
+Specifically at least up to iOS9 and Android 6 you can't stream audio to the WebAudio API >:(
+In that case it's not streamed.
 
 ## Usage
 
@@ -28,7 +28,7 @@ streamSource.on('error', function(err) {
 });
 
 var src     = 'url-to-some.mp3';          // file to play
-var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on iOS
+var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers those on iOS/Android
 
 streamSource.setSource(src, lofiSrc);
 </script>
@@ -39,18 +39,19 @@ streamSource.setSource(src, lofiSrc);
 `audioStreamSource.create`, it takes options. After that you setup event listeners, `newSource`
 and `error` using the `streamSource.on` function. You then call `streamSource.setSource` with
 1 or 2 URLs. The first URL is the source to your audio. The second URL is an optional second source
-for if you're on iOS since as of iOS9 iOS still does not support `createMediaElementSource`.
+for if you're on iOS since as of iOS9 iOS and Android Chrome as of 52 still do not support
+`createMediaElementSource`.
 
 When the audio is ready to play you'll get a `newSource` event. At that point you can call
 `streamSource.play` and connect the `source` node wherever you need it.
 
-Because iOS does not support `createMediaElementSource` it can't stream audio into Web Audio.
+Because mobile does not support `createMediaElementSource` it can't stream audio into Web Audio.
 That means (a) it can not start playing audio until the entire file is downloaded and (b) it
 generally can not get access to cross origin audio data.
 
 *   `streamSource.setSource`
 
-    lets you set a new source.
+    lets you set a new source. "mic" = microphone
 
 *   `streamSource.getSource`
 
