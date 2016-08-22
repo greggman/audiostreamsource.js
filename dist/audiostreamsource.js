@@ -1,4 +1,4 @@
-// @license audiosteamsource.js 0.1.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+// @license audiosteamsource.js 0.1.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 // Available via the MIT license.
 // see: http://github.com/greggman/audiostreamsource.js for details
 
@@ -19,8 +19,15 @@
   //var shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
   var shittyBrowser = /Android|iPhone|iPad|iPod/.test(navigator.userAgent);
   var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
   var g_micSource;
+
+  function noGetUserMedia(options, successCallback, errorCallback) {
+    setTimeout(function() {
+      errorCallback("no mic support on this browser/device");
+    });
+  }
+
+  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || noGetUserMedia;
 
   function addEventEmitter(self) {
     var _handlers = {};
