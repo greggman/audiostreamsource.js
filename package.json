@@ -1,6 +1,6 @@
 {
   "name": "audiostreamsource.js",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Provides a streamed audio source for WebAudio across browsers",
   "main": "dist/audiostreamsource.js",
   "scripts": {
