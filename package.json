@@ -17,6 +17,9 @@
     "Audio",
     "Music"
   ],
+  "files": [
+    "dist/audiostreamsource.js"
+  ],
   "author": "Greggman",
   "license": "MIT",
   "bugs": {
