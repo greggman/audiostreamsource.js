@@ -5,6 +5,10 @@ This is a tiny library to provide a streamed audio source for the WebAudio API c
 Specifically at least up to iOS9 and Android 6 you can't stream audio to the WebAudio API >:(
 In that case it's not streamed.
 
+## Example (warning - has sound)
+
+http://greggman.github.io/audiostreamsource.js
+
 ## Usage
 
 ```html
