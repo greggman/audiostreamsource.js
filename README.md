@@ -74,6 +74,20 @@ generally can not get access to cross origin audio data.
 
     return true if the stream is playing.
 
+### Events
+
+*   `newSource`
+
+    A new source is ready and loaded. Your passed the source
+
+*   `error`
+
+    The source could not be loaded
+
+*   `ended`
+
+    The source has ended (played to the end of the song)
+
 ### Options
 
 The options passed into `audioStreamSource.create` are as follows
@@ -127,9 +141,10 @@ var lofiSrc = 'url-to-some-smaller.mp3';  // for shitty browsers like Safari on 
 streamSource.setSource(src, lofiSrc);
 ```
 
-## Example
+## Examples
 
-[There's an example here](http://twgljs.org/examples/dynamic-buffers.html).
+*  [There's an example here](http://twgljs.org/examples/dynamic-buffers.html).
+*  [Another here](http://vertexshaderart.com).
 
 ## License
 
